@@ -11,7 +11,7 @@ def index():
 @app.route('/api/planets')
 def get_planets():
     df = pd.read_csv('data_planets.csv')
-    return jsonify(df.to_dict(orient='records'))
+    return df.to_json(orient='records')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

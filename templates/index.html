@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <title>Exoplanet Visualizations</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="container">
         <h1>Exoplanet Explorations</h1>
-        
+
         <div class="visualization">
             <h2>1. Planet Radius Comparison</h2>
             <div class="chart-container">
                 <canvas id="radius-chart"></canvas>
             </div>
         </div>
-        
+
         <div class="visualization">
             <h2>2. Planet Characteristics Comparison</h2>
             <div class="controls">
@@ -28,15 +29,34 @@
                 <canvas id="comparison-chart"></canvas>
             </div>
         </div>
-        
+
         <div class="visualization">
             <h2>3. Flux vs Temperature</h2>
             <div class="chart-container">
                 <canvas id="flux-chart"></canvas>
             </div>
         </div>
+
+        <div class="visualization">
+            <h2>4. Habitable Zone Orbit Visualization</h2>
+            <div id="orbit-controls" style="margin-bottom: 1rem;"></div>
+            <div id="orbit-chart" class="chart-container"></div>
+        </div>
+
+        <div class="visualization">
+            <h2>StarMap</h2>
+            <div id="starmap-chart"  class="chart-container"></div>
+        </div>
+        <div class="visualization">
+            <h2>Flux-Temperature Chart</h2>
+            <div id="temperature-flux-chart"  class="chart-container"></div>
+        </div>
     </div>
 
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="/static/js/D3/orbit.js"></script>
+    <script src="/static/js/D3/starmap.js"></script>
+    <script src="/static/js/D3/flux.js"></script>
     <script src="/static/js/script.js"></script>
 </body>
 </html>

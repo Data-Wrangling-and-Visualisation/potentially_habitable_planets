@@ -71,5 +71,23 @@ The relationship between the radius and flux of the star is shown, with the addi
 <img src="images/radius_Flux_habitable_zones.png" alt="Компьютер" width="600" height="400">
 
 ### Data Delivery
+The processed data is connected to the visualization of the website using Flask
+RESTful API. This application provides data in JSON format, ensuring smooth communication between data processing and the web application.
 
 ### Data Visualization
+Vizualization on website usinf D3.js with interactive features. 
+
+1. Habitable zone orbitvizualization
+The display of planets in orbit, divided into types of planets using an interactive function.
+
+<img src="images/plot1.jpg" alt="Компьютер" width="600" height="400">
+
+2. StarMap
+Displaying stars with an interactive function of showing data and dividing stars by the degree of "habitability" according to the formula.
+
+<img src="images/2nd_plot.png" alt="Компьютер" width="600" height="400">
+
+3. Temperature vs. Flux with radius vizualization
+Displaying planets with an interactive data display function.
+
+<img src="images/3rd_plot.png" alt="Компьютер" width="600" height="400">

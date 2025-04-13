@@ -91,3 +91,12 @@ Displaying stars with an interactive function of showing data and dividing stars
 Displaying planets with an interactive data display function.
 
 <img src="images/3rd_plot.png" alt="Компьютер" width="600" height="400">
+
+
+
+### Running the system
+
+prerequisites: Docker installed on your system.
+
+1. Build image: docker build -t dwv .
+2. Run image: docker run -p 5000:5000 dwv

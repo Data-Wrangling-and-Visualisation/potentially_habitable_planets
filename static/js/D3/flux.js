@@ -31,7 +31,7 @@ function createTemperatureFluxChart(planets) {
         .attr('text-anchor', 'middle')
         .style('font-size', '18px')
         .style('fill', '#fff')
-        .text('3D Planetary Equilibrium Temperature vs Flux vs Radius');
+        .text('2D Planetary Equilibrium Temperature vs Flux vs Radius');
 
     // Define axis limits
     const fluxLimits = [0.1, 1000]; // Flux (F⊕)

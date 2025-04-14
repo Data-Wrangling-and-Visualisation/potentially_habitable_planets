@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .datum({
                     angle,
                     orbitRadius,
-                    speed: 0.001 + Math.random() * 0.001,
+                    speed: 0.005 + Math.random() * 0.01,
                     planet
                 })
                 .on("mouseover", function (event, d) {

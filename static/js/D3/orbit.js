@@ -1,5 +1,35 @@
 document.addEventListener('DOMContentLoaded', function () {
     let animationOn = true;
+    let planetNodes = [];
+
+    const tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("visibility", "hidden")
+        .style("background", "#ffffffdd")
+        .style("color", "#1c1c2e")
+        .style("padding", "10px")
+        .style("border-radius", "8px")
+        .style("box-shadow", "0 0 10px rgba(0,0,0,0.3)")
+        .style("font-size", "13px");
+
+    const notePanel = d3.select("body")
+        .append("div")
+        .attr("class", "note-panel")
+        .style("position", "fixed")
+        .style("top", "20px")
+        .style("right", "20px")
+        .style("width", "280px")
+        .style("max-height", "400px")
+        .style("overflow-y", "auto")
+        .style("background", "#08141f")
+        .style("color", "#f1f1f1")
+        .style("padding", "16px")
+        .style("border-radius", "12px")
+        .style("box-shadow", "0 0 15px rgba(91, 255, 135, 0.3)")
+        .style("display", "none")
+        .style("z-index", 20);
 
     fetch('/api/planets')
         .then(res => res.json())
@@ -47,6 +77,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drawOrbitChart(planets) {
+        planetNodes = []; // Clear old nodes
+
         const width = 600, height = 600;
         const centerX = width / 2, centerY = height / 2;
 
@@ -56,7 +88,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .attr("height", height)
             .style("background", "radial-gradient(#0b1b2a, #010f1a)");
 
-        // Define glow filter
         const defs = svg.append("defs");
         const glow = defs.append("filter")
             .attr("id", "planet-glow");
@@ -66,18 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const feMerge = glow.append("feMerge");
         feMerge.append("feMergeNode").attr("in", "coloredBlur");
         feMerge.append("feMergeNode").attr("in", "SourceGraphic");
-
-        const radiusScale = d3.scaleSqrt()
-            .domain([0, d3.max(planets, d => +d['Period (days)'] || 0)])
-            .range([30, 250]);
-
-        // Sun
-        svg.append("circle")
-            .attr("cx", centerX)
-            .attr("cy", centerY)
-            .attr("r", 16)
-            .style("fill", "url(#sunGradient)")
-            .style("filter", "url(#planet-glow)");
 
         const sunGradient = defs.append("radialGradient")
             .attr("id", "sunGradient")
@@ -89,8 +108,18 @@ document.addEventListener('DOMContentLoaded', function () {
             .attr("offset", "100%")
             .attr("stop-color", "#ffc200");
 
+        svg.append("circle")
+            .attr("cx", centerX)
+            .attr("cy", centerY)
+            .attr("r", 16)
+            .style("fill", "url(#sunGradient)")
+            .style("filter", "url(#planet-glow)");
+
+        const radiusScale = d3.scaleSqrt()
+            .domain([0, d3.max(planets, d => +d['Period (days)'] || 0)])
+            .range([30, 250]);
+
         const pastelColors = d3.scaleOrdinal(d3.schemePastel1);
-        const planetNodes = [];
 
         planets.forEach((planet, i) => {
             const orbitRadius = radiusScale(+planet['Period (days)'] || 0);
@@ -114,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .datum({
                     angle,
                     orbitRadius,
-                    speed: 0.001 + Math.random() * 0.001,
+                    speed: 0.005 + Math.random() * 0.01,
                     planet
                 })
                 .on("mouseover", function (event, d) {
@@ -145,45 +174,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
             planetNodes.push({ element: planetNode, angle, orbitRadius, speed: planetNode.datum().speed });
         });
-
-        // Animate orbit
-        d3.timer(() => {
-            if (!animationOn) return;
-            planetNodes.forEach(d => {
-                d.angle += d.speed;
-                const x = centerX + d.orbitRadius * Math.cos(d.angle);
-                const y = centerY + d.orbitRadius * Math.sin(d.angle);
-                d.element.attr("cx", x).attr("cy", y);
-            });
-        });
-
-        const tooltip = d3.select("body")
-            .append("div")
-            .attr("class", "tooltip")
-            .style("position", "absolute")
-            .style("visibility", "hidden")
-            .style("background", "#ffffffdd")
-            .style("color", "#1c1c2e")
-            .style("padding", "10px")
-            .style("border-radius", "8px")
-            .style("box-shadow", "0 0 10px rgba(0,0,0,0.3)")
-            .style("font-size", "13px");
-
-        const notePanel = d3.select("body")
-            .append("div")
-            .attr("class", "note-panel")
-            .style("position", "fixed")
-            .style("top", "20px")
-            .style("right", "20px")
-            .style("width", "280px")
-            .style("max-height", "400px")
-            .style("overflow-y", "auto")
-            .style("background", "#08141f")
-            .style("color", "#f1f1f1")
-            .style("padding", "16px")
-            .style("border-radius", "12px")
-            .style("box-shadow", "0 0 15px rgba(91, 255, 135, 0.3)")
-            .style("display", "none")
-            .style("z-index", 20);
     }
+
+    // Persistent animation loop
+    d3.timer(() => {
+        if (!animationOn || !planetNodes.length) return;
+        const centerX = 300, centerY = 300;
+        planetNodes.forEach(d => {
+            d.angle += d.speed;
+            const x = centerX + d.orbitRadius * Math.cos(d.angle);
+            const y = centerY + d.orbitRadius * Math.sin(d.angle);
+            d.element.attr("cx", x).attr("cy", y);
+        });
+    });
 });

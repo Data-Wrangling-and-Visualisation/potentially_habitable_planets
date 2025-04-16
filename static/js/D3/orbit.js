@@ -31,11 +31,26 @@ document.addEventListener('DOMContentLoaded', function () {
         .style("display", "none")
         .style("z-index", 20);
 
+    // Добавляем кнопку "Закрыть"
+    notePanel.append("button")
+        .attr("class", "close-button")
+        .text("Close")
+        .style("margin-bottom", "10px")
+        .style("padding", "4px 10px")
+        .style("border", "none")
+        .style("border-radius", "6px")
+        .style("background", "#7ecbff")
+        .style("color", "#001828")
+        .style("cursor", "pointer");
+
     fetch('/api/planets')
         .then(res => res.json())
         .then(planets => {
             initControls(planets);
             drawOrbitChart(planets);
+        })
+        .catch(error => {
+            console.error('Error loading data:', error);
         });
 
     function initControls(planets) {
@@ -79,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function drawOrbitChart(planets) {
         planetNodes = []; // Clear old nodes
 
-        const width = 600, height = 600;
+        const width = 1000, height = 600;
         const centerX = width / 2, centerY = height / 2;
 
         const svg = d3.select("#orbit-chart")
@@ -115,14 +130,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .style("fill", "url(#sunGradient)")
             .style("filter", "url(#planet-glow)");
 
-        const radiusScale = d3.scaleSqrt()
-            .domain([0, d3.max(planets, d => +d['Period (days)'] || 0)])
+        const radiusScale = d3.scaleLinear()
+            .domain([0, d3.max(planets, d => +d['Distance (ly)'] || 0)])
             .range([30, 250]);
 
-        const pastelColors = d3.scaleOrdinal(d3.schemePastel1);
-
         planets.forEach((planet, i) => {
-            const orbitRadius = radiusScale(+planet['Period (days)'] || 0);
+            const orbitRadius = radiusScale(+planet['Distance (ly)'] || 0);
             const angle = Math.random() * 2 * Math.PI;
 
             svg.append("circle")
@@ -134,7 +147,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 .attr("stroke-width", 1)
                 .attr("stroke-dasharray", "3,4");
 
-            const color = planet.Note?.toLowerCase().includes("habitable") ? "#7fff8c" : pastelColors(i);
+            let color = '';
+            if (planet['Star type']) {
+                const starType = planet['Star type'].charAt(0);
+                color = getColorForStarType(starType);
+            } else {
+                color = '#ccc';
+            }
 
             const planetNode = svg.append("circle")
                 .attr("r", 5.5)
@@ -143,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .datum({
                     angle,
                     orbitRadius,
-                    speed: 0.005 + Math.random() * 0.01,
+                    speed: 0.001 + Math.random() * 0.001,
                     planet
                 })
                 .on("mouseover", function (event, d) {
@@ -170,6 +189,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 .on("click", function (event, d) {
                     notePanel.style("display", "block")
                         .html(`<h3>${d.planet.Object}</h3><p>${d.planet.Note || "No additional notes"}</p>`);
+                    setTimeout(() => {
+                        notePanel.style("display", "none"); // Закрываем панель через 5 секунд
+                    }, 5000);
                 });
 
             planetNodes.push({ element: planetNode, angle, orbitRadius, speed: planetNode.datum().speed });
@@ -179,12 +201,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // Persistent animation loop
     d3.timer(() => {
         if (!animationOn || !planetNodes.length) return;
-        const centerX = 300, centerY = 300;
+        const centerX = 500, centerY = 300;
         planetNodes.forEach(d => {
             d.angle += d.speed;
             const x = centerX + d.orbitRadius * Math.cos(d.angle);
             const y = centerY + d.orbitRadius * Math.sin(d.angle);
             d.element.attr("cx", x).attr("cy", y);
         });
+    });
+
+    // Обработчик кнопки "Закрыть"
+    notePanel.select(".close-button").on("click", () => {
+        notePanel.style("display", "none");
     });
 });

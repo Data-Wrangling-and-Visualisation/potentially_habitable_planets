@@ -12,7 +12,7 @@ function createTemperatureFluxChart(planets) {
 
     // Set up dimensions
     const margin = { top: 50, right: 100, bottom: 70, left: 70 };
-    const width = 900 - margin.left - margin.right;
+    const width = 1000 - margin.left - margin.right;
     const height = 600 - margin.top - margin.bottom;
 
     // Create SVG container
@@ -31,7 +31,7 @@ function createTemperatureFluxChart(planets) {
         .attr('text-anchor', 'middle')
         .style('font-size', '18px')
         .style('fill', '#fff')
-        .text('2D Planetary Equilibrium Temperature vs Flux vs Radius');
+        .text(' ');
 
     // Define axis limits
     const fluxLimits = [0.1, 1000]; // Flux (F⊕)
@@ -57,9 +57,18 @@ function createTemperatureFluxChart(planets) {
         .domain(radiusLimits)
         .range([2, 20]);
 
+    // Update colorScale to use star type colors
     const colorScale = d3.scaleOrdinal()
-        .domain(['M', 'K', 'G', 'F', 'A', 'B', 'O'])
-        .range(['#ff6b35', '#ffb563', '#ffd166', '#06d6a0', '#118ab2', '#073b4c', '#8338ec']);
+        .domain(['O', 'B', 'A', 'F', 'G', 'K', 'M'])
+        .range([
+            '#00BFFF', // O (Голубой)
+            '#87CEFA', // B (Бело-голубой)
+            '#FFFFFF', // A (Белый)
+            '#FFFFE0', // F (Жёлто-белый)
+            '#FFD700', // G (Жёлтый)
+            '#FFA500', // K (Оранжевый)
+            '#FF0000'  // M (Красный)
+        ]);
 
     // Add axes with limited tick values
     const xAxis = d3.axisBottom(xScale)
@@ -124,7 +133,14 @@ function createTemperatureFluxChart(planets) {
         const radius = radiusScale(+planet['Radius (R⊕)']);
         const angle = Math.random() * 2 * Math.PI;
 
-        const color = planet.Note?.toLowerCase().includes("habitable") ? "#7fff8c" : colorScale(i);
+        // Determine the color based on the star type
+        let color = '';
+        if (planet['Star type']) {
+            const starType = planet['Star type'].charAt(0);
+            color = colorScale(starType);
+        } else {
+            color = '#ccc'; // Default color if Star type is not available
+        }
 
         const planetNode = svg.append("circle")
             .attr("r", radius)

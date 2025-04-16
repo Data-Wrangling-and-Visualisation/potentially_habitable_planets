@@ -9,20 +9,22 @@
 </head>
 <body>
     <div class="container">
-        <h1>Exoplanet Explorations</h1>
-
         <div class="visualization">
-            <h2>1. Planet Radius Comparison</h2>
-            <div class="chart-container">
-                <canvas id="radius-chart"></canvas>
-            </div>
+            <h1>Exoplanet Explorations</h1>
+            <p>
+                Exoplanets are planets that orbit stars outside our solar system. They come in various sizes, temperatures, and orbital characteristics. 
+                This visualization helps you explore their properties using interactive charts.
+            </p>
         </div>
 
         <div class="visualization">
-            <h2>2. Planet Characteristics Comparison</h2>
+            <h2>1. Planet Characteristics Comparison</h2>
+            <p>
+                The radar chart compares key characteristics of selected exoplanets, including mass, radius, flux, temperature, and distance from Earth. 
+                Use the dropdown menu to select planets for comparison.
+            </p>
             <div class="controls">
-                <select id="planet-select" multiple size="5">
-                </select>
+                <select id="planet-select" multiple size=""></select>
                 <button id="compare-btn">Compare Selected</button>
             </div>
             <div class="chart-container">
@@ -31,25 +33,87 @@
         </div>
 
         <div class="visualization">
-            <h2>3. Flux vs Temperature</h2>
-            <div class="chart-container">
-                <canvas id="flux-chart"></canvas>
-            </div>
-        </div>
-
-        <div class="visualization">
-            <h2>4. Habitable Zone Orbit Visualization</h2>
+            <h2>2. Habitable Zone Orbit Visualization</h2>
+            <p>
+                The visualization shows the orbits of exoplanets around their host stars. 
+                The orbits are scaled based on the distance of the planet from Earth (<span class="glossary" data-tooltip="The distance between a star and its planet, measured in light-years (ly).">Distance (ly)</span>). 
+                Planets in the habitable zone are highlighted in green.
+            </p>
             <div id="orbit-controls" style="margin-bottom: 1rem;"></div>
             <div id="orbit-chart" class="chart-container"></div>
         </div>
 
         <div class="visualization">
-            <h2>5. StarMap</h2>
-            <div id="starmap-chart"  class="chart-container"></div>
+            <h2>3. StarMap: Habitability Visualization</h2>
+            <p>
+                This interactive star map visualizes exoplanet systems with scientifically calculated 
+                <span class="glossary" data-tooltip="A measure of how suitable a planet might be for life as we know it">habitability scores</span>. 
+                Each star's color represents the average potential habitability of its planets, ranging from yellow to green.
+            </p>
+            
+            <div class="science-card">
+                <h3><i class="icon-science"></i> Habitability Calculation</h3>
+                <div class="parameter-grid">
+                    <div class="parameter-card">
+                        <div class="parameter-icon">★</div>
+                        <div class="parameter-content">
+                            <h4>Star Type</h4>
+                            <p>F, G, K stars most favorable for life</p>
+                        </div>
+                    </div>
+                    
+                    <div class="parameter-card">
+                        <div class="parameter-icon">🌍</div>
+                        <div class="parameter-content">
+                            <h4>Planet Radius</h4>
+                            <p>0.8-1.4 Earth radii optimal</p>
+                        </div>
+                    </div>
+                    
+                    <div class="parameter-card">
+                        <div class="parameter-icon">🔥</div>
+                        <div class="parameter-content">
+                            <h4>Temperature</h4>
+                            <p>200-330K for liquid water</p>
+                        </div>
+                    </div>
+                    
+                    <div class="parameter-card">
+                        <div class="parameter-icon">☀️</div>
+                        <div class="parameter-content">
+                            <h4>Radiation Flux</h4>
+                            <p>0.35-1.5 Earth flux optimal</p>
+                        </div>
+                    </div>
+                    
+                    <div class="parameter-card">
+                        <div class="parameter-icon">⏱</div>
+                        <div class="parameter-content">
+                            <h4>Orbital Period</h4>
+                            <p>10-400 days optimal</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="science-footer">
+                    <p>Based on research from <a href="https://www.semanticscholar.org/reader/1cc1cb0659cf41a8ce70af2aa21ea3aba8c13c1d" target="_blank">A Comprehensive Approach to Earth-Like Exoplanet Detection</a></p>
+                </div>
+            </div>
+            
+            <div id="starmap-chart" class="chart-container"></div>
+
         </div>
+
         <div class="visualization">
-            <h2>6. Flux-Temperature Chart</h2>
-            <div id="temperature-flux-chart"  class="chart-container"></div>
+            <h2>4. Flux-Temperature Chart</h2>
+            <p>
+                This scatter plot shows the relationship between a planet's <span class="glossary" data-tooltip="The equilibrium temperature of a planet, measured in Kelvin (K).">temperature</span> 
+                and the <span class="glossary" data-tooltip="The amount of energy received by a planet from its star, relative to Earth's flux (F⊕).">flux</span> it receives from its host star . 
+
+                The spectral classes of stars are arranged in decreasing order of temperature, from bluer to redder — O, B, A, F, G, K, M.
+                There is a mnemonic phrase for memorizing the main star sequence: "Oh Be A Fine Girl (Guy), Kiss Me".
+            </p>
+            <div id="temperature-flux-chart" class="chart-container"></div>
         </div>
     </div>
 

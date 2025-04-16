@@ -14,69 +14,293 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 40px 20px;
+    overflow-x: hidden;
 }
 
-/* === Header === */
-header {
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     text-align: center;
-    margin-bottom: 40px;
 }
 
-header h1 {
-    font-size: 2.5rem;
+.visualization {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.visualization h2 {
+    font-size: 2rem;
     font-weight: 700;
     color: #5b5f97;
-    text-shadow: 1px 1px 6px rgba(91, 95, 151, 0.2);
     margin-bottom: 10px;
 }
 
-header p {
-    font-size: 1.1rem;
-    color: #4a4e69;
-    max-width: 600px;
-    margin: 0 auto;
+.visualization p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* === Chart Section === */
 .chart-container {
+    width: 100%;
+    max-width: 1000px;
+    height: 600px;
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(6px);
     border-radius: 18px;
     box-shadow: 0 8px 24px rgba(91, 95, 151, 0.15);
     padding: 20px;
-    margin-bottom: 50px;
+    margin: 0 auto;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: visible;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    box-sizing: content-box;
 }
 
 .chart-container:hover {
     box-shadow: 0 12px 32px rgba(91, 95, 151, 0.25);
 }
 
-/* === Footer (optional) === */
-footer {
-    font-size: 0.85rem;
-    color: #636e72;
-    text-align: center;
-    margin-top: auto;
-    padding: 20px 0;
+.chart-container canvas {
+    display: block;
+    margin: 0 auto; /* Центрирование canvas */
+    width: 110%; /* Занимает всю доступную ширину */
+    height: 110%; /* Занимает всю доступную высоту */
 }
 
-/* === Tooltip Styling (if using Chart.js tooltips) === */
-.chartjs-tooltip {
-    background: rgba(255, 255, 255, 0.85);
-    color: #1c1c2e;
-    border: 1px solid #a29bfe;
+.controls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+#planet-select {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ced4da;
     border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 0.9rem;
+    font-size: 14px;
+    background: #fff;
+    max-width: 300px; /* Увеличим ширину выпадающего списка */
+    width: 300px; /* Фиксированная ширина */
 }
 
-/* === Mobile Responsiveness === */
+#compare-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background: #7ecbff;
+    color: #001828;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#compare-btn:hover {
+    background: #5bbcff;
+}
+
+.glossary {
+    text-decoration: underline;
+    cursor: help;
+    color: #555;
+    position: relative;
+    font-weight: 500;
+}
+
+.glossary::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+}
+
+.glossary:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
 @media (max-width: 600px) {
     header h1 {
         font-size: 2rem;
     }
+
+    .visualization h2 {
+        font-size: 1.5rem;
+    }
+
+    .visualization p {
+        font-size: 13px;
+    }
+
+    .chart-container {
+        height: 400px;
+        max-width: 100%;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #planet-select {
+        width: 100%;
+    }
 }
 
+/* Science Card */
+.science-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(6px);
+    border-radius: 14px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1000px;
+    box-shadow: 0 4px 16px rgba(91, 95, 151, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
 
+.science-card h3 {
+    color: #5b5f97;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Parameter Grid */
+.parameter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.parameter-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+}
+
+.parameter-card:hover {
+    transform: translateY(-2px);
+}
+
+.parameter-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(123, 201, 255, 0.2);
+    border-radius: 8px;
+    color: #5b5f97;
+}
+
+.parameter-content h4 {
+    color: #1c1c2e;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.parameter-content p {
+    color: #555;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.science-footer {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.science-footer a {
+    color: #5b5f97;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.science-footer a:hover {
+    text-decoration: underline;
+}
+
+.guide-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.guide-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.guide-icon {
+    font-size: 1.2rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(123, 201, 255, 0.2);
+    border-radius: 50%;
+    color: #5b5f97;
+}
+
+.guide-item p {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .parameter-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .guide-items {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .parameter-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .guide-items {
+        grid-template-columns: 1fr;
+    }
+}

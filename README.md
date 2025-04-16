@@ -78,19 +78,19 @@ RESTful API. This application provides data in JSON format, ensuring smooth comm
 Vizualization on website using chart.js(1st plot) and D3.js(other 3 plots) with interactive features. 
 
 1. Planet Characteristics Comparison
-<img src="images/plot1.jpg" alt="Компьютер" width="600" height="400">
+<img src="images/plot1.png" alt="Компьютер" width="600" height="400">
 
 2. Habitable zone orbit vizualization
 
-<img src="images/plot2.jpg" alt="Компьютер" width="600" height="400">
+<img src="images/plot2.png" alt="Компьютер" width="600" height="400">
 
 3. StarMap: Habitability Visualization
 
-<img src="images/plot3.jpg" alt="Компьютер" width="600" height="400">
+<img src="images/plot3.png" alt="Компьютер" width="600" height="400">
 
 4. Flux-Temperature Chart
 
-<img src="images/plot4.jpg" alt="Компьютер" width="600" height="400">
+<img src="images/plot4.png" alt="Компьютер" width="600" height="400">
 
 
 
